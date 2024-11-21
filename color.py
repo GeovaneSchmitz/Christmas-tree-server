@@ -32,10 +32,17 @@ for i in range(color_count):
 print(json.dumps(colors))
 
 
-step_count = 32
+color_count_step = 4
+step_count_total = 256
+max_number = 255
 steps = []
-for i in range(step_count):
-    steps.append(int((i / (step_count - 1)) * 255))
-for i in range(step_count):
-    steps.append( 255 - int((i / (step_count - 1)) * 255))
+step_per_color = step_count_total // color_count_step
+for i in range(step_per_color // 2):
+    steps.append(int(i / ((step_per_color // 2) - 1) * max_number))
+for i in range(step_per_color // 2):
+    steps.append(max_number - int(i / ((step_per_color // 2) - 1) * max_number))
+for i in range(color_count_step - 1):
+    for j in range(step_per_color):
+        steps.append(0)
+
 print(steps)

@@ -24,7 +24,7 @@ class ChristmasTreeClient(Thread):
         self.__client = client
 
         max_color_count = 32
-        max_step_count = 64
+        max_step_count = 256
 
         self.__color_size = max_color_count * 3
         self.__step_size = max_step_count
@@ -63,7 +63,7 @@ class ChristmasTreeClient(Thread):
         )
 
         self.__start_on = (18, 0)
-        self.__end_on = (23, 0)
+        self.__end_on = (23, 30)
 
         self.__config_path = pathlib.Path().resolve() / "configs"
         self.__current_configs_set: set[str] = set()
