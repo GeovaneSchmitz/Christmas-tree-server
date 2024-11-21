@@ -63,7 +63,7 @@ class ChristmasTreeClient(Thread):
         )
 
         self.__start_on = (18, 0)
-        self.__end_on = (23, 30)
+        self.__end_on = (23, 0)
 
         self.__config_path = pathlib.Path().resolve() / "configs"
         self.__current_configs_set: set[str] = set()
