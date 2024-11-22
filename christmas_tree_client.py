@@ -11,7 +11,7 @@ import time
 import pathlib
 import os
 import random
-from datetime import datetime
+from datetime import datetime, date
 
 
 class ChristmasTreeClient(Thread):
@@ -70,6 +70,36 @@ class ChristmasTreeClient(Thread):
         self.__current_configs_list: list[str] = []
         self.__current_index = 0
 
+    def __is_active(self) -> bool:
+        """
+        Check if this time is within the active time range.
+        """
+        now = datetime.now()
+
+        christmas = date(now.year, 12, 24)
+        if christmas == now.date():
+            if (17, 0) <= (now.hour, now.minute) <= (23, 59):
+                return True
+
+        christmas_eve = date(now.year, 12, 25)
+        if christmas_eve == now.date():
+            if (0, 0) <= (now.hour, now.minute) <= (2, 0):
+                return True
+
+        new_year = date(now.year, 12, 31)
+        if new_year == now.date():
+            if (23, 0) <= (now.hour, now.minute) <= (23, 59):
+                return True
+
+        first_jan = date(now.year, 1, 1)
+        if first_jan == now.date():
+            if (0, 0) <= (now.hour, now.minute) <= (2, 0):
+                return True
+
+        if self.__start_on <= (now.hour, now.minute) < self.__end_on:
+            return True
+        return False
+
     def __active_config(self) -> bytes:
         configs_list = list(os.listdir(self.__config_path))
         configs_set = set(configs_list)
@@ -111,8 +141,7 @@ class ChristmasTreeClient(Thread):
         """
         while True:
             try:
-                now = datetime.now()
-                if self.__start_on <= (now.hour, now.minute) < self.__end_on:
+                if self.__is_active():
                     data = self.__active_config()
                 else:
                     data = self.__generate_struct(
