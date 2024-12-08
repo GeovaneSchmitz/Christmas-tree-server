@@ -3,13 +3,13 @@
   "led_count": 300,
   "step_shift": 64,
   "color_shift": 0,
-  "step_delay": 40,
+  "step_delay": 25,
   "led_interval": 0,
   "colors": [
-    "#ff0000",
-    "#0000ff",
-    "#00ff00",
-    "#ff8800"
+    "#ff0033",
+    "#2222ff",
+    "#00ff22",
+    "#ff4400"
   ],
   "steps": [0,
   8,

@@ -4,7 +4,7 @@
   "step_shift": 8,
   "color_shift": 1,
   "step_delay": 5,
-  "led_interval": 1,
+  "led_interval": 0,
   "colors": [
     "#000000",
     "#000000"

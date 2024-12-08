@@ -27,7 +27,7 @@ class ChristmasTreeClient(Thread):
         max_step_count = 256
 
         self.__color_size = max_color_count * 3
-        self.__step_size = max_step_count
+        self.__step_size = max_step_count * 3
 
         colors_format = "B" * self.__color_size
         steps_format = "B" * self.__step_size
@@ -149,7 +149,7 @@ class ChristmasTreeClient(Thread):
                     )
 
                 self.__client.send(data)
-                time.sleep(30)
+                time.sleep(60)
             except (ConnectionResetError, ConnectionAbortedError) as e:
                 print(f"Error: {e}")
                 break
@@ -181,9 +181,19 @@ class ChristmasTreeClient(Thread):
             color_ints.extend(self.__color_hex_to_rgb(color_str))
         color_ints.extend([0] * (self.__color_size - len(color_ints)))
 
+        steps_ints: List[int] = []
         steps = list(data.get("steps", []))
         step_count = len(steps)
-        steps.extend([0] * (self.__step_size - len(steps)))
+        for step in steps:
+            if isinstance(step, list):
+                steps_ints.extend([step[1], step[0], step[2]])
+            elif isinstance(step, int):
+                steps_ints.extend([step, step, step])
+            elif isinstance(step, str):
+                steps_ints.extend(self.__color_hex_to_rgb(step))
+        
+        steps_ints.extend([0] * (self.__step_size - len(steps_ints)))
+        
         for key in self.__struct_order:
             if key == "active":
                 struct_values.append(int(data.get("active", 0)))
@@ -194,7 +204,7 @@ class ChristmasTreeClient(Thread):
             elif key == "colors":
                 struct_values.extend(color_ints)
             elif key == "steps":
-                struct_values.extend(steps)
+                struct_values.extend(steps_ints)
             else:
                 struct_values.append(data[key])
 
